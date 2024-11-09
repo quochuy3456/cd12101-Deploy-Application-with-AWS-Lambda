@@ -8,6 +8,20 @@ const logger = createLogger('utils')
  * @returns a user id from the JWT token
  */
 export function parseUserId(jwtToken) {
-  const decodedJwt = decode(jwtToken)
-  return decodedJwt.sub
+    try {
+        const split = jwtToken.split(' ');
+        const token = split[1];
+        if (!token) throw new Error('No token found in the authorization header');
+
+        const decodedJwt = decode(token);
+        if (!decodedJwt || typeof decodedJwt.sub !== 'string') {
+            throw new Error('Invalid token structure: "sub" field is missing');
+        }
+
+        logger.info('User was authorized');
+        return decodedJwt.sub;
+    } catch (error) {
+        logger.error('Failed to parse user ID from JWT token', { error: error.message });
+        return null;
+    }
 }
