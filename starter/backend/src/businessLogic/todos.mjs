@@ -15,7 +15,9 @@ export const getAllTodosForUser = async (userId) => {
     try {
         return await todosAccess.getAllTodosForUser(userId);
     } catch (error) {
-        logger.error(`Error retrieving todos for user ${userId}:`, error);
+        logger.error({
+                    "action": `Error retrieving todos for user ${userId}: ${error}`
+                });
         throw new Error('Could not fetch todos');
     }
 };
@@ -31,7 +33,9 @@ export const createTodo = async (userId, newTodo) => {
         await todosAccess.createTodo(newTodo);
         return newTodo;
     } catch (error) {
-        logger.error(`Error creating todo for user ${userId}:`, error);
+        logger.error({
+                    "action": `Error creating todo for user ${userId}: ${error}`
+                });
         throw new Error('Could not create todo');
     }
 };
@@ -41,7 +45,9 @@ export const updateTodo = async (todoId, userId, updatedTodo) => {
         await todosAccess.updateTodo(todoId, userId, updatedTodo);
         return { ...updatedTodo, todoId, userId };
     } catch (error) {
-        logger.error(`Error updating todo ${todoId} for user ${userId}:`, error);
+        logger.error({
+                    "action": `Error updating todo ${todoId} for user ${userId}: ${error}`
+                });
         throw new Error('Could not update todo');
     }
 };
@@ -50,7 +56,9 @@ export const deleteTodo = async (todoId, userId) => {
     try {
         await todosAccess.deleteTodo(todoId, userId);
     } catch (error) {
-        logger.error(`Error deleting todo ${todoId} for user ${userId}:`, error);
+        logger.error({
+                    "action": `Error deleting todo ${todoId} for user ${userId}: ${error}`
+                });
         throw new Error('Could not delete todo');
     }
 };
@@ -61,7 +69,9 @@ export const updateAttachmentUrlTodo = async (todoId, userId) => {
         await todosAccess.updateAttachmentUrlTodo(todoId, userId, attachmentUrl);
         return attachmentUrl;
     } catch (error) {
-        logger.error(`Error updating attachment URL for todo ${todoId} for user ${userId}:`, error);
+        logger.error({
+                    "action": `Error updating attachment URL for todo ${todoId} for user ${userId}: ${error}`
+                });
         throw new Error('Could not update attachment URL');
     }
 };
@@ -77,7 +87,9 @@ export const getUploadUrl = async (key) => {
         });
         return url;
     } catch (error) {
-        logger.error(`Error generating upload URL for key ${key}:`, error);
+        logger.error({
+                    "action": `Error generating upload URL for key ${key}: ${error}`
+                });
         throw new Error('Could not generate upload URL');
     }
 };

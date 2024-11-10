@@ -26,7 +26,9 @@ export class TodosAccess {
     }
 
     async getAllTodosForUser(userId) {
-        logger.info(`Getting all todos for user: ${userId}`);
+        logger.info({
+            "action": `Getting all todos for user: ${userId}`
+        });
 
         const command = new QueryCommand({
             TableName: this.todosTable,
@@ -40,16 +42,22 @@ export class TodosAccess {
 
         try {
             const response = await this.docClient.send(command);
-            logger.info(`Retrieved ${response.Items.length} todos for user: ${userId}`);
+            logger.info({
+                "action": `Retrieved ${response.Items.length} todos for user: ${userId}`
+            });
             return response.Items;
         } catch (error) {
-            logger.error(`Error getting todos for user ${userId}: ${error.message}`);
+            logger.error({
+                    "action": `Error getting todos for user ${userId}: ${error.message}`
+                });
             throw new Error('Could not retrieve todos');
         }
     }
 
     async createTodo(newTodo) {
-        logger.info(`Creating todo for user ${newTodo.userId}`);
+        logger.info({
+                    "action": `Creating todo for user ${newTodo.userId}`
+                });
 
         const command = new PutCommand({
             TableName: this.todosTable,
@@ -58,15 +66,21 @@ export class TodosAccess {
 
         try {
             await this.docClient.send(command);
-            logger.info(`Successfully created todo with ID: ${newTodo.todoId}`);
+            logger.info({
+                    "action": `Successfully created todo with ID: ${newTodo.todoId}`
+                });
         } catch (error) {
-            logger.error(`Error creating todo for user ${newTodo.userId}: ${error.message}`);
+            logger.error({
+                    "action": `Error creating todo for user ${newTodo.userId}: ${error.message}`
+                });
             throw new Error('Could not create todo');
         }
     }
 
     async updateTodo(todoId, userId, updatedTodo) {
-        logger.info(`Updating todo ${todoId} for user ${userId}`);
+        logger.info({
+                    "action": `Updating todo ${todoId} for user ${userId}`
+                });
 
         const command = new UpdateCommand({
             TableName: this.todosTable,
@@ -88,16 +102,22 @@ export class TodosAccess {
 
         try {
             const response = await this.docClient.send(command);
-            logger.info(`Updated todo ${todoId} for user ${userId}`);
+            logger.info({
+                    "action": `Updated todo ${todoId} for user ${userId}`
+                });
             return response.Attributes;
         } catch (error) {
-            logger.error(`Error updating todo ${todoId} for user ${userId}: ${error.message}`);
+            logger.error({
+                    "action": `Error updating todo ${todoId} for user ${userId}: ${error.message}`
+                });
             throw new Error('Could not update todo');
         }
     }
 
     async updateAttachmentUrlTodo(todoId, userId, attachmentUrl) {
-        logger.info(`Updating attachment URL for todo ${todoId} for user ${userId}`);
+        logger.info({
+                    "action": `Updating attachment URL for todo ${todoId} for user ${userId}`
+                });
 
         const command = new UpdateCommand({
             TableName: this.todosTable,
@@ -114,17 +134,22 @@ export class TodosAccess {
 
         try {
             const response = await this.docClient.send(command);
-            logger.info(`Updated attachment URL for todo ${todoId} with new URL: ${attachmentUrl}`);
+            logger.info({
+                    "action": `Updated attachment URL for todo ${todoId} with new URL: ${attachmentUrl}`
+                });
             return response.Attributes;
         } catch (error) {
-            logger.error(`Error updating attachment URL for todo ${todoId}: ${error.message}`);
+            logger.error({
+                    "action": `Error updating attachment URL for todo ${todoId}: ${error.message}`
+                });
             throw new Error('Could not update attachment URL');
         }
     }
 
     async deleteTodo(todoId, userId) {
-        logger.info(`Deleting todo ${todoId} for user ${userId}`);
-
+        logger.info({
+                    "action": `Deleting todo ${todoId} for user ${userId}`
+                });
         const command = new DeleteCommand({
             TableName: this.todosTable,
             Key: {
@@ -135,9 +160,13 @@ export class TodosAccess {
 
         try {
             await this.docClient.send(command);
-            logger.info(`Successfully deleted todo ${todoId}`);
+            logger.info({
+                    "action": `Successfully deleted todo ${todoId}`
+                });
         } catch (error) {
-            logger.error(`Error deleting todo ${todoId} for user ${userId}: ${error.message}`);
+            logger.error({
+                    "action": `Error deleting todo ${todoId} for user ${userId}: ${error.message}`
+                });
             throw new Error('Could not delete todo');
         }
     }
